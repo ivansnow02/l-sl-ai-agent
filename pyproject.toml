@@ -1,10 +1,7 @@
 [project]
-name = "react-agent"
+name = "l-sl-react-agent"
 version = "0.0.1"
-description = "Starter template for making a custom Reasoning and Action agent (using tool calling) in LangGraph."
-authors = [
-    { name = "William Fu-Hinthorn", email = "13333726+hinthornw@users.noreply.github.com" },
-]
+description = "A react agent for short links"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
