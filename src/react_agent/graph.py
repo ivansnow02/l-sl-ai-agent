@@ -5,6 +5,7 @@ Works with a chat model with tool calling support.
 
 import os
 from datetime import datetime, timezone
+from pyexpat import model
 from typing import Dict, List, Literal, cast
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import AIMessage
@@ -15,15 +16,13 @@ from pydantic import BaseModel, Field, SecretStr
 from src.react_agent.configuration import Configuration
 from src.react_agent.state import InputState, State
 from src.react_agent.tools import MONITOR_TOOLS
-from src.react_agent.utils import load_chat_model
+from src.react_agent.utils import load_chat_model, load_openai_chat_model
 from langgraph.checkpoint.memory import MemorySaver
 import dotenv
+
 dotenv.load_dotenv()
 memory = MemorySaver()
 # Define the function that calls the model
-
-token = os.environ["GITHUB_TOKEN"]
-endpoint = "https://models.inference.ai.azure.com"
 
 
 async def call_model(
@@ -43,9 +42,7 @@ async def call_model(
     configuration = Configuration.from_runnable_config(config)
 
     # Initialize the model with tool binding. Change the model or add more tools here.
-    model = ChatOpenAI(
-        model="gpt-4o-mini", api_key=SecretStr(token), base_url=endpoint, temperature=1
-    ).bind_tools(MONITOR_TOOLS)
+    model = load_openai_chat_model().bind_tools(MONITOR_TOOLS)
 
     # Format the system prompt. Customize this to change the agent's behavior.
     system_message = configuration.system_prompt.format(
