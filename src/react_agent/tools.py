@@ -7,7 +7,6 @@ consider implementing more robust and specialized tools tailored to your needs.
 """
 
 import os
-from optparse import Option
 from typing import Any, Callable, List, Optional, cast
 
 from langchain_community.tools.tavily_search import TavilySearchResults
@@ -91,7 +90,7 @@ async def search(
 # |» success|boolean|true|none||none|
 
 @tool
-async def get_short_url_status(
+async def get_short_link_status(
     fullShortUrl: Optional[str] = None,
     gid: Optional[str] = None,
     startDate: Optional[str] = None,
@@ -109,20 +108,24 @@ async def get_short_url_status(
         Authorization: The authorization token.
 
     Returns:
-        pv: The page views.
-        uv: The unique visitors.
-        uip: The unique IP addresses.
-        daily: The daily visit details.
-        localeCnStats: The visit locations.
-        hourStats: The hourly visit details.
-        topIpStats: The top IP addresses.
-        weekdayStats: The weekly visit details.
-        browserStats: The browser statistics.
-        osStats: The operating system statistics.
-        uvTypeStats: The visitor type statistics.
-        deviceStats: The device statistics.
-        networkStats: The network statistics.
+        a dict of short link status.
+
     """
+    # Returns:
+    #     pv: The page views.
+    #     uv: The unique visitors.
+    #     uip: The unique IP addresses.
+    #     daily: The daily visit details.
+    #     localeCnStats: The visit locations.
+    #     hourStats: The hourly visit details.
+    #     topIpStats: The top IP addresses.
+    #     weekdayStats: The weekly visit details.
+    #     browserStats: The browser statistics.
+    #     osStats: The operating system statistics.
+    #     uvTypeStats: The visitor type statistics.
+    #     deviceStats: The device statistics.
+    #     networkStats: The network statistics.
+    # """
 
     url = f"{BASE_URL}/stats"
 
@@ -151,11 +154,189 @@ async def get_short_url_status(
         return None
     return response.json()
 
+# |gid|query|string| 否 |分组标识|
+# |startDate|query|string| 否 |开始日期|
+# |endDate|query|string| 否 |结束日期|
+# |Authorization|header|string| 否 |token|
+@tool
+async def get_short_link_group(
+    gid: Optional[str] = None,
+    startDate: Optional[str] = None,
+    endDate: Optional[str] = None,
+    Authorization: Optional[str] = None,
+):
+    """
+    Get short URL group from a backend API.
 
-TOOLS: List[Callable[..., Any]] = [get_short_url_status]
+    Args:
+        gid: The group ID.
+        startDate: The start date.
+        endDate: The end date.
+        Authorization: The authorization token.
+
+    Returns:
+        a dict of short link group status.
+
+    """
+    # Returns:
+    #     pv: The page views.
+    #     uv: The unique visitors.
+    #     uip: The unique IP addresses.
+    #     daily: The daily visit details.
+    #     localeCnStats: The visit locations.
+    #     hourStats: The hourly visit details.
+    #     topIpStats: The top IP addresses.
+    #     weekdayStats: The weekly visit details.
+    #     browserStats: The browser statistics.
+    #     osStats: The operating system statistics.
+    #     uvTypeStats: The visitor type statistics.
+    #     deviceStats: The device statistics.
+    #     networkStats: The network statistics.
+    # """
+
+    url = f"{BASE_URL}/api/short-link/admin/v1/stats/group"
+
+    body = {
+        "gid": gid,
+        "startDate": startDate,
+        "endDate": endDate,
+    }
+
+    headers = {
+        "Authorization": Authorization,
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+    }
+
+    try:
+        response = requests.get(url, params=body, headers=headers)
+        print(response.json())
+        response.raise_for_status()  # Raise an error for bad status codes
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+    return response.json()
 
 
-import asyncio
+# fullShortUrl	query	string	否	完整短链接
+# gid	query	string	否	分组标识
+# startDate	query	string	否	开始日期
+# endDate	query	string	否	结束日期
+# current	query	integer	否	当前页
+# size	query	integer	否	每页大小
+# Authorization	header	string	否	token
+@tool
+async def get_one_short_link_access_record(
+    fullShortUrl: Optional[str] = None,
+    gid: Optional[str] = None,
+    startDate: Optional[str] = None,
+    endDate: Optional[str] = None,
+    current: Optional[int] = None,
+    size: Optional[int] = None,
+    Authorization: Optional[str] = None,
+):
+    """
+    Get short URL access record from a backend API.
 
-if __name__ == "__main__":
-    asyncio.run(get_short_url_status())
+    Args:
+        fullShortUrl: The full short URL.
+        gid: The group ID.
+        startDate: The start date.
+        endDate: The end date.
+        current: The current page.
+        size: The page size.
+        Authorization: The authorization token.
+
+    Returns:
+        a dict of short link access record.
+    """
+
+    url = f"{BASE_URL}/api/short-link/admin/v1/stats/access-record"
+
+    body = {
+            "fullShortUrl": fullShortUrl,
+            "gid": gid,
+            "startDate": startDate,
+            "endDate": endDate,
+            "current": current,
+            "size": size,
+        }
+
+    headers = {
+        "Authorization": Authorization,
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+        }
+
+    try:
+        response = requests.get(url, params=body, headers=headers)
+        print(response.json())
+        response.raise_for_status()  # Raise an error for bad status codes
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+    return response.json()
+
+# gid	query	string	否	分组标识
+# startDate	query	string	否	开始日期
+# endDate	query	string	否	结束日期
+# current	query	integer	否	当前页
+# size	query	integer	否	每页大小
+# Authorization	header	string	否	token
+@tool
+async def get_short_link_group_access_record(
+    gid: Optional[str] = None,
+    startDate: Optional[str] = None,
+    endDate: Optional[str] = None,
+    current: Optional[int] = None,
+    size: Optional[int] = None,
+    Authorization: Optional[str] = None,
+):
+    """
+    Get short URL group access record from a backend API.
+
+    Args:
+        gid: The group ID.
+        startDate: The start date.
+        endDate: The end date.
+        current: The current page.
+        size: The page size.
+        Authorization: The authorization token.
+
+    Returns:
+        a dict of short link group access record.
+    """
+
+    url = f"{BASE_URL}/api/short-link/admin/v1/stats/access-record/group"
+
+    body = {
+            "gid": gid,
+            "startDate": startDate,
+            "endDate": endDate,
+            "current": current,
+            "size": size,
+        }
+
+    headers = {
+        "Authorization": Authorization,
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+        }
+
+    try:
+        response = requests.get(url, params=body, headers=headers)
+        print(response.json())
+        response.raise_for_status()  # Raise an error for bad status codes
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+    return response.json()
+
+
+
+MONITOR_TOOLS: List[Callable[..., Any]] = [
+    get_short_link_status,
+    get_short_link_group,
+    get_one_short_link_access_record,
+    get_short_link_group_access_record
+    ]

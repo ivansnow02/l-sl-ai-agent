@@ -14,7 +14,7 @@ from langgraph.prebuilt import ToolNode
 from pydantic import BaseModel, Field, SecretStr
 from src.react_agent.configuration import Configuration
 from src.react_agent.state import InputState, State
-from src.react_agent.tools import TOOLS
+from src.react_agent.tools import MONITOR_TOOLS
 from src.react_agent.utils import load_chat_model
 from langgraph.checkpoint.memory import MemorySaver
 import dotenv
@@ -45,7 +45,7 @@ async def call_model(
     # Initialize the model with tool binding. Change the model or add more tools here.
     model = ChatOpenAI(
         model="gpt-4o-mini", api_key=SecretStr(token), base_url=endpoint, temperature=1
-    ).bind_tools(TOOLS)
+    ).bind_tools(MONITOR_TOOLS)
 
     # Format the system prompt. Customize this to change the agent's behavior.
     system_message = configuration.system_prompt.format(
@@ -81,7 +81,7 @@ builder = StateGraph(State, input=InputState, config_schema=Configuration)
 
 # Define the two nodes we will cycle between
 builder.add_node(call_model)
-builder.add_node("tools", ToolNode(TOOLS))
+builder.add_node("tools", ToolNode(tools=MONITOR_TOOLS))
 
 # Set the entrypoint as `call_model`
 # This means that this node is the first one called
