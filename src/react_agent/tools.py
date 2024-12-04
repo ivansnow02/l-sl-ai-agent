@@ -334,7 +334,7 @@ async def get_short_link_group_access_record(
 
 
 
-MONITOR_TOOLS: List[Callable[..., Any]] = [
+MONITOR_TOOLS= [
     get_short_link_status,
     get_short_link_group,
     get_one_short_link_access_record,
