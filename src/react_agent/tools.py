@@ -37,57 +37,7 @@ async def search(
     return cast(list[dict[str, Any]], result)
 
 
-# |名称|位置|类型|必选|说明|
-# |---|---|---|---|---|
-# |fullShortUrl|query|string| 否 |完整短链接|
-# |gid|query|string| 否 |分组标识|
-# |startDate|query|string| 否 |开始日期|
-# |endDate|query|string| 否 |结束日期|
-# |Authorization|header|string| 否 |token|
-# |名称|类型|必选|约束|中文名|说明|
-# |---|---|---|---|---|---|
-# |» code|string|true|none||none|
-# |» message|null|true|none||none|
-# |» data|object|true|none||none|
-# |»» pv|null|true|none|PV|none|
-# |»» uv|null|true|none|UV|none|
-# |»» uip|null|true|none|UIP|none|
-# |»» daily|[object]|true|none|访问明细|none|
-# |»»» date|string|true|none|时间|none|
-# |»»» pv|integer|true|none|PV|none|
-# |»»» uv|integer|true|none|UV|none|
-# |»»» uip|integer|true|none|UIP|none|
-# |»» localeCnStats|[object]|true|none|访问地区|none|
-# |»»» cnt|integer|true|none|数量|none|
-# |»»» locale|string|true|none|地区名|none|
-# |»»» ratio|number|true|none|占比|none|
-# |»» hourStats|[integer]|true|none|24小时|none|
-# |»» topIpStats|[object]|true|none|高频访问IP|none|
-# |»»» cnt|integer|true|none||none|
-# |»»» ip|string|true|none||none|
-# |»» weekdayStats|[integer]|true|none|一周数据|none|
-# |»» browserStats|[object]|true|none|访问浏览器|none|
-# |»»» cnt|integer|true|none|数量|none|
-# |»»» browser|string|true|none|浏览器|none|
-# |»»» ratio|number|true|none|占比|none|
-# |»» osStats|[object]|true|none|访问操作系统|none|
-# |»»» cnt|integer|true|none|数量|none|
-# |»»» os|string|true|none|操作系统|none|
-# |»»» ratio|number|true|none|占比|none|
-# |»» uvTypeStats|[object]|true|none|访客类型|none|
-# |»»» cnt|integer|true|none|数量|none|
-# |»»» uvType|string|true|none|访客类型|newUser：新访客 oldUser：老访客|
-# |»»» ratio|number|true|none|占比|none|
-# |»» deviceStats|[object]|true|none|访问设备|none|
-# |»»» cnt|integer|true|none|数量|none|
-# |»»» device|string|true|none|访问设备|Mobile：移动设备 PC：电脑|
-# |»»» ratio|number|true|none|占比|none|
-# |»» networkStats|[object]|true|none|访问网络|none|
-# |»»» cnt|integer|true|none|数量|none|
-# |»»» network|string|true|none|访问网络|Mobile：移动数据 WIFI：WIFI|
-# |»»» ratio|number|true|none|占比|none|
-# |» requestId|null|true|none||none|
-# |» success|boolean|true|none||none|
+
 
 @tool
 async def get_short_link_status(
@@ -111,21 +61,7 @@ async def get_short_link_status(
         a dict of short link status.
 
     """
-    # Returns:
-    #     pv: The page views.
-    #     uv: The unique visitors.
-    #     uip: The unique IP addresses.
-    #     daily: The daily visit details.
-    #     localeCnStats: The visit locations.
-    #     hourStats: The hourly visit details.
-    #     topIpStats: The top IP addresses.
-    #     weekdayStats: The weekly visit details.
-    #     browserStats: The browser statistics.
-    #     osStats: The operating system statistics.
-    #     uvTypeStats: The visitor type statistics.
-    #     deviceStats: The device statistics.
-    #     networkStats: The network statistics.
-    # """
+
 
     url = f"{BASE_URL}/stats"
 
@@ -136,9 +72,7 @@ async def get_short_link_status(
         "endDate": endDate,
     }
 
-# --header 'Accept: */*' \
-#          --header 'Host: 127.0.0.1:4523' \
-#                   --header 'Connection: keep-alive'
+
     headers = {
         "Authorization": Authorization,
         "Accept": "*/*",
@@ -154,10 +88,7 @@ async def get_short_link_status(
         return None
     return response.json()
 
-# |gid|query|string| 否 |分组标识|
-# |startDate|query|string| 否 |开始日期|
-# |endDate|query|string| 否 |结束日期|
-# |Authorization|header|string| 否 |token|
+
 @tool
 async def get_short_link_group(
     gid: Optional[str] = None,
@@ -178,21 +109,7 @@ async def get_short_link_group(
         a dict of short link group status.
 
     """
-    # Returns:
-    #     pv: The page views.
-    #     uv: The unique visitors.
-    #     uip: The unique IP addresses.
-    #     daily: The daily visit details.
-    #     localeCnStats: The visit locations.
-    #     hourStats: The hourly visit details.
-    #     topIpStats: The top IP addresses.
-    #     weekdayStats: The weekly visit details.
-    #     browserStats: The browser statistics.
-    #     osStats: The operating system statistics.
-    #     uvTypeStats: The visitor type statistics.
-    #     deviceStats: The device statistics.
-    #     networkStats: The network statistics.
-    # """
+
 
     url = f"{BASE_URL}/api/short-link/admin/v1/stats/group"
 
@@ -218,13 +135,7 @@ async def get_short_link_group(
     return response.json()
 
 
-# fullShortUrl	query	string	否	完整短链接
-# gid	query	string	否	分组标识
-# startDate	query	string	否	开始日期
-# endDate	query	string	否	结束日期
-# current	query	integer	否	当前页
-# size	query	integer	否	每页大小
-# Authorization	header	string	否	token
+
 @tool
 async def get_one_short_link_access_record(
     fullShortUrl: Optional[str] = None,
@@ -340,3 +251,73 @@ MONITOR_TOOLS= [
     get_one_short_link_access_record,
     get_short_link_group_access_record
     ]
+
+# {
+#     "domain": "http://www.baidu.com",
+#     "originUrl": "https://www.yuque.com/xiangxinliao-bb1ly",
+#     "gid": "0",
+#     "createdType": 1,
+#     "validDateType": 1,
+#     "validDate": "",
+#     "describe": "yuque-miirso"
+# }
+@tool
+async def create_short_link(
+    domain: Optional[str] = None,
+    originUrl: Optional[str] = None,
+    gid: Optional[str] = None,
+    createdType: Optional[int] = None,
+    validDateType: Optional[int] = None,
+    validDate: Optional[str] = None,
+    describe: Optional[str] = None,
+):
+    """
+    Create short URL
+
+    Args:
+        domain: The domain.
+        originUrl: The original URL.
+        gid: The group ID.
+        createdType: The created type.
+        validDateType: The valid date type.
+        validDate: The valid date.
+        describe: The description.
+
+    Returns:
+        a dict of short link.
+    """
+
+    url = f"{BASE_URL}/create"
+
+    body = {
+        "domain": domain,
+        "originUrl": originUrl,
+        "gid": gid,
+        "createdType": createdType,
+        "validDateType": validDateType,
+        "validDate": validDate,
+        "describe": describe,
+    }
+
+    headers = {
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+    }
+
+    try:
+        response = requests.get(url, params=body, headers=headers)
+        print(response.json())
+        response.raise_for_status()  # Raise an error for bad status codes
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+    return response.json()
+
+MANAGER_TOOLS = [
+    create_short_link
+]
+
+
+SUPPOR_TOOLS = [
+    search
+]

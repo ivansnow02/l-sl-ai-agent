@@ -14,21 +14,6 @@ from src.react_agent import prompts
 class Configuration:
     """The configuration for the agent."""
 
-    system_prompt: str = field(
-        default=prompts.SYSTEM_PROMPT,
-        metadata={
-            "description": "The system prompt to use for the agent's interactions. "
-            "This prompt sets the context and behavior for the agent."
-        },
-    )
-
-    model: Annotated[str, {"__template_metadata__": {"kind": "llm"}}] = field(
-        default="gpt-4o-mini",
-        metadata={
-            "description": "The name of the language model to use for the agent's main interactions. "
-            "Should be in the form: provider/model-name."
-        },
-    )
 
     max_search_results: int = field(
         default=2,
