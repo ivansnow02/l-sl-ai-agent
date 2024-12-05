@@ -9,10 +9,10 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import ToolNode
 from pydantic import BaseModel, Field, SecretStr
-from src.react_agent.prompts import MANAGER_PROMPT, STATUS_PROMPT
+from src.react_agent.prompts import MANAGER_PROMPT, STATUS_PROMPT, SUPPORT_PROMPT
 from src.react_agent.configuration import Configuration
 from src.react_agent.state import AgentState, InputState, State
-from src.react_agent.tools import MANAGER_TOOLS, MONITOR_TOOLS
+from src.react_agent.tools import MANAGER_TOOLS, MONITOR_TOOLS, SUPPORT_TOOLS
 from src.react_agent.utils import load_chat_model, load_openai_chat_model
 from langgraph.checkpoint.memory import MemorySaver
 import dotenv

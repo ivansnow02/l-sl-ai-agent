@@ -305,7 +305,7 @@ async def create_short_link(
     }
 
     try:
-        response = requests.get(url, params=body, headers=headers)
+        response = requests.post(url, params=body, headers=headers)
         print(response.json())
         response.raise_for_status()  # Raise an error for bad status codes
     except requests.exceptions.RequestException as e:
@@ -318,6 +318,6 @@ MANAGER_TOOLS = [
 ]
 
 
-SUPPOR_TOOLS = [
+SUPPORT_TOOLS = [
     search
 ]
